@@ -7,12 +7,7 @@
     },
     "release": {
       "outFile": "build/release.wasm",
-      "textFile": "build/release.wat",
-      "optimize": true,
-      "optimizeLevel": 3,
-      "shinkLevel": 2,
-      "noExportMemory": true,
-      "bindings": "raw"
+      "textFile": "build/release.wat"
     }
   }
 }
