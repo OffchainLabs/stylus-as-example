@@ -1,13 +1,13 @@
-// External imports provided to all WASM programs on Stylus. These functions
-// can be use to read input arguments coming into the program and output arguments to callers.
 
-/*
-// To test
-declare namespace vm_hooks {
-    function read_args(dest: usize): void;
-    function write_result(data: usize, len: i32): void;
-}
-*/
+/**
+ * The `ENTRYPOINT` macro handles importing this hostio, which is required if the
+ * program's memory grows. Otherwise compilation through the `ArbWasm` precompile will revert.
+ * Internally the Stylus VM forces calls to this hostio whenever new WASM pages are allocated.
+ * Calls made voluntarily will unproductively consume gas.
+ */
+// @ts-ignore
+@external("vm_hooks", "memory_grow")
+declare function memory_grow(pages: usize): void;
 
 /**
  * Reads the program calldata. The semantics are equivalent to that of the EVM's
@@ -34,27 +34,30 @@ function myAbort(message: usize, fileName: usize, line: u32, column: u32): void 
 }
 
 // Helper functions
-function args(len: i32): Uint8Array | null {
-    let input = new Uint8Array(len);
-    read_args(input.dataStart as usize);
+export function mark_used(): void {
+    memory_grow(0);
+}
+
+function getInput(len: i32): Uint8Array | null {
+    const inputPtr = heap.alloc(len);
+    read_args(inputPtr);
+
+    const input = changetype<Uint8Array>(inputPtr);
     return input;
 }
 
-function output(data: Uint8Array): void {
-    write_result(data.dataStart as usize, data.length);
+function sendOutput(data: Uint8Array, len: i32): void {
+    const dataPtr = changetype<usize>(data);
+    write_result(dataPtr, len);
 }
-
-// Program functionality
-// export function get_number(): u8 {
-//     return 7;
-//  }
 
 // Main entrypoint
 export function user_entrypoint(len: i32): i32 {
-    let input = args(len);
+    const input = getInput(len);
     if (!input) {
         return 1;
     }
-    output(input);
+    
+    sendOutput(input, len);
     return 0;
 }
