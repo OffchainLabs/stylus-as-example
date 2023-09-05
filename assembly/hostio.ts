@@ -1,5 +1,5 @@
+// @ts-nocheck
 // Define the hooks as external functions that the AssemblyScript module can call.
-// The "@vm_hooks" decorator is an indicator of the import's namespace.
 
 /**
  * Gets the ETH balance in wei of the account at the given address.
@@ -8,7 +8,7 @@
  * [`BALANCE`]: https://www.evm.codes/#31
  */
 @external("vm_hooks", "account_balance")
-export declare function account_balance(address: Uint8Array, dest: Uint8Array): void;
+export declare function account_balance(address: u32, dest: u32): void;
 
 /**
  * Gets the code hash of the account at the given address. The semantics are equivalent
@@ -19,29 +19,7 @@ export declare function account_balance(address: Uint8Array, dest: Uint8Array): 
  * [`EXT_CODEHASH`]: https://www.evm.codes/#3F
  */
 @external("vm_hooks", "account_codehash")
-export declare function account_codehash(address: Uint8Array, dest: Uint8Array): void;
-
-/**
- * Reads a 32-byte value from permanent storage. Stylus's storage format is identical to
- * that of the EVM. This means that, under the hood, this hostio is accessing the 32-byte
- * value stored in the EVM state trie at offset `key`, which will be `0` when not previously
- * set. The semantics, then, are equivalent to that of the EVM's [`SLOAD`] opcode.
- * 
- * [`SLOAD`]: https://www.evm.codes/#54
- */
-@external("vm_hooks", "storage_load_bytes32")
-export declare function storage_load_bytes32(key: Uint8Array, dest: Uint8Array): void;
-
-/**
- * Stores a 32-byte value to permanent storage. Stylus's storage format is identical to that
- * of the EVM. This means that, under the hood, this hostio is storing a 32-byte value into
- * the EVM state trie at offset `key`. Furthermore, refunds are tabulated exactly as in the
- * EVM. The semantics, then, are equivalent to that of the EVM's [`SSTORE`] opcode.
- * 
- * [`SSTORE`]: https://www.evm.codes/#55
- */
-@external("vm_hooks", "storage_store_bytes32")
-export declare function storage_store_bytes32(key: Uint8Array, value: Uint8Array): void;
+export declare function account_codehash(address: u32, dest: u32): void;
 
 /**
  * Gets the basefee of the current block. The semantics are equivalent to that of the EVM's
@@ -50,16 +28,7 @@ export declare function storage_store_bytes32(key: Uint8Array, value: Uint8Array
  * [`BASEFEE`]: https://www.evm.codes/#48
  */
 @external("vm_hooks", "block_basefee")
-export declare function block_basefee(basefee: Uint8Array): void;
-
-/**
- * Gets the unique chain identifier of the Arbitrum chain. The semantics are equivalent to
- * that of the EVM's [`CHAIN_ID`] opcode.
- * 
- * [`CHAIN_ID`]: https://www.evm.codes/#46
- */
-@external("vm_hooks", "chainid")
-export declare function chainid(): u64;
+export declare function block_basefee(basefee: u32): void;
 
 /**
  * Gets the coinbase of the current block, which on Arbitrum chains is the L1 batch poster's
@@ -67,7 +36,7 @@ export declare function chainid(): u64;
  * determines the coinbase.
  */
 @external("vm_hooks", "block_coinbase")
-export declare function block_coinbase(coinbase: Uint8Array): void;
+export declare function block_coinbase(coinbase: u32): void;
 
 /**
  * Gets the gas limit of the current block. The semantics are equivalent to that of the EVM's
@@ -119,13 +88,22 @@ export declare function block_timestamp(): u64;
  */
 @external("vm_hooks", "call_contract")
 export declare function call_contract(
-    contract: Uint8Array,
-    calldata: Uint8Array,
-    calldata_len: usize,
-    value: Uint8Array,
+    contract: u32,
+    calldata: u32,
+    calldata_len: u32,
+    value: u32,
     gas: u64,
-    return_data_len: usize
+    return_data_len: u32
 ): u8;
+
+/**
+ * Gets the unique chain identifier of the Arbitrum chain. The semantics are equivalent to
+ * that of the EVM's [`CHAIN_ID`] opcode.
+ * 
+ * [`CHAIN_ID`]: https://www.evm.codes/#46
+ */
+@external("vm_hooks", "chainid")
+export declare function chainid(): u64;
 
 /**
  * Gets the address of the current program. The semantics are equivalent to that of the EVM's
@@ -134,7 +112,7 @@ export declare function call_contract(
  * [`ADDRESS`]: https://www.evm.codes/#30
  */
 @external("vm_hooks", "contract_address")
-export declare function contract_address(address: Uint8Array): void;
+export declare function contract_address(address: u32): void;
 
 /**
  * Deploys a new contract using the init code provided, which the EVM executes to construct
@@ -155,11 +133,11 @@ export declare function contract_address(address: Uint8Array): void;
  */
 @external("vm_hooks", "create1")
 export declare function create1(
-    code: Uint8Array,
-    code_len: usize,
-    endowment: Uint8Array,
-    contract: Uint8Array,
-    revert_data_len: usize
+    code: u32,
+    code_len: u32,
+    endowment: u32,
+    contract: u32,
+    revert_data_len: u32
 ): void;
 
 /**
@@ -181,12 +159,12 @@ export declare function create1(
  */
 @external("vm_hooks", "create2")
 export declare function create2(
-    code: Uint8Array,
-    code_len: usize,
-    endowment: Uint8Array,
-    salt: Uint8Array,
-    contract: Uint8Array,
-    revert_data_len: usize
+    code: u32,
+    code_len: u32,
+    endowment: u32,
+    salt: u32,
+    contract: u32,
+    revert_data_len: u32
 ): void;
 
 /**
@@ -207,11 +185,11 @@ export declare function create2(
  */
 @external("vm_hooks", "delegate_call_contract")
 export declare function delegate_call_contract(
-    contract: Uint8Array,
-    calldata: Uint8Array,
-    calldata_len: usize,
+    contract: u32,
+    calldata: u32,
+    calldata_len: u32,
     gas: u64,
-    return_data_len: usize
+    return_data_len: u32
 ): u8;
 
 /**
@@ -227,7 +205,7 @@ export declare function delegate_call_contract(
  * [`LOG4`]: https://www.evm.codes/#a4
  */
 @external("vm_hooks", "emit_log")
-export declare function emit_log(data: Uint8Array, len: usize, topics: usize): void;
+export declare function emit_log(data: u32, len: u32, topics: u32): void;
 
 /**
  * Gets the amount of gas left after paying for the cost of this hostio. The semantics are
@@ -271,7 +249,7 @@ export declare function memory_grow(pages: u16): void;
  * [`Retryable Ticket Address Aliasing`]: https://developer.arbitrum.io/arbos/l1-to-l2-messaging#address-aliasing
  */
 @external("vm_hooks", "msg_sender")
-export declare function msg_sender(sender: Uint8Array): void;
+export declare function msg_sender(sender: u32): void;
 
 /**
  * Get the ETH value in wei sent to the program. The semantics are equivalent to that of the
@@ -280,7 +258,7 @@ export declare function msg_sender(sender: Uint8Array): void;
  * [`CALLVALUE`]: https://www.evm.codes/#34
  */
 @external("vm_hooks", "msg_value")
-export declare function msg_value(value: Uint8Array): void;
+export declare function msg_value(value: u32): void;
 
 /**
  * Efficiently computes the [`keccak256`] hash of the given preimage.
@@ -290,7 +268,7 @@ export declare function msg_value(value: Uint8Array): void;
  * [`SHA3`]: https://www.evm.codes/#20
  */
 @external("vm_hooks", "native_keccak256")
-export declare function native_keccak256(bytes: Uint8Array, len: usize, output: Uint8Array): void;
+export declare function native_keccak256(bytes: u32, len: u32, output: u32): void;
 
 /**
  * Reads the program calldata. The semantics are equivalent to that of the EVM's
@@ -299,7 +277,7 @@ export declare function native_keccak256(bytes: Uint8Array, len: usize, output: 
  * [`CALLDATA_COPY`]: https://www.evm.codes/#37
  */
 @external("vm_hooks", "read_args")
-export declare function read_args(data: Uint8Array): void;
+export declare function read_args(data: u32): void;
 
 /**
  * Copies the bytes of the last EVM call or deployment return result. Reverts if out of
@@ -308,15 +286,7 @@ export declare function read_args(data: Uint8Array): void;
  * [`RETURN_DATA_COPY`]: https://www.evm.codes/#3e
  */
 @external("vm_hooks", "read_return_data")
-export declare function read_return_data(dest: Uint8Array, offset: usize, size: usize): usize;
-
-/**
- * Writes the final return data. If not called before the program exists, the return data will
- * be 0 bytes long. Note that this hostio does not cause the program to exit, which happens
- * naturally when [`user_entrypoint`] returns.
- */
-@external("vm_hooks", "write_result")
-export declare function write_result(data: Uint8Array, len: usize): void;
+export declare function read_return_data(dest: u32, offset: u32, size: u32): u32;
 
 /**
  * Returns the length of the last EVM call or deployment return result, or `0` if neither have
@@ -326,7 +296,7 @@ export declare function write_result(data: Uint8Array, len: usize): void;
  * [`RETURN_DATA_SIZE`]: https://www.evm.codes/#3d
  */
 @external("vm_hooks", "return_data_size")
-export declare function return_data_size(): usize;
+export declare function return_data_size(): u32;
 
 /**
  * Static calls the contract at the given address, with the option to limit the amount of gas
@@ -346,12 +316,34 @@ export declare function return_data_size(): usize;
  */
 @external("vm_hooks", "static_call_contract")
 export declare function static_call_contract(
-    contract: Uint8Array,
-    calldata: Uint8Array,
-    calldata_len: usize,
+    contract: u32,
+    calldata: u32,
+    calldata_len: u32,
     gas: u64,
-    return_data_len: usize
+    return_data_len: u32
 ): u8;
+
+/**
+ * Reads a 32-byte value from permanent storage. Stylus's storage format is identical to
+ * that of the EVM. This means that, under the hood, this hostio is accessing the 32-byte
+ * value stored in the EVM state trie at offset `key`, which will be `0` when not previously
+ * set. The semantics, then, are equivalent to that of the EVM's [`SLOAD`] opcode.
+ * 
+ * [`SLOAD`]: https://www.evm.codes/#54
+ */
+@external("vm_hooks", "storage_load_bytes32")
+export declare function storage_load_bytes32(key: u32, dest: u32): void;
+
+/**
+ * Stores a 32-byte value to permanent storage. Stylus's storage format is identical to that
+ * of the EVM. This means that, under the hood, this hostio is storing a 32-byte value into
+ * the EVM state trie at offset `key`. Furthermore, refunds are tabulated exactly as in the
+ * EVM. The semantics, then, are equivalent to that of the EVM's [`SSTORE`] opcode.
+ * 
+ * [`SSTORE`]: https://www.evm.codes/#55
+ */
+@external("vm_hooks", "storage_store_bytes32")
+export declare function storage_store_bytes32(key: u32, value: u32): void;
 
 /**
  * Gets the gas price in wei per gas, which on Arbitrum chains equals the basefee. The
@@ -360,7 +352,7 @@ export declare function static_call_contract(
  *  [`GAS_PRICE`]: https://www.evm.codes/#3A
  */
 @external("vm_hooks", "tx_gas_price")
-export declare function tx_gas_price(gas_price: Uint8Array): void;
+export declare function tx_gas_price(gas_price: u32): void;
 
 /**
  * Gets the price of ink in evm gas basis points. See [`Ink and Gas`] for more information on
@@ -369,7 +361,7 @@ export declare function tx_gas_price(gas_price: Uint8Array): void;
  * [`Ink and Gas`]: https://developer.arbitrum.io/TODO
  */
 @external("vm_hooks", "tx_ink_price")
-export declare function tx_ink_price(): u64;
+export declare function tx_ink_price(): u32;
 
 /**
  * Gets the top-level sender of the transaction. The semantics are equivalent to that of the
@@ -378,4 +370,12 @@ export declare function tx_ink_price(): u64;
  * [`ORIGIN`]: https://www.evm.codes/#32
  */
 @external("vm_hooks", "tx_origin")
-export declare function tx_origin(origin: Uint8Array): void;
+export declare function tx_origin(origin: u32): void;
+
+/**
+ * Writes the final return data. If not called before the program exists, the return data will
+ * be 0 bytes long. Note that this hostio does not cause the program to exit, which happens
+ * naturally when [`user_entrypoint`] returns.
+ */
+@external("vm_hooks", "write_result")
+export declare function write_result(data: u32, len: u32): void;
