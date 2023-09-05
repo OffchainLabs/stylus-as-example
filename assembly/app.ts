@@ -1,6 +1,3 @@
-import { getInput, sendOutput } from "./stylus";
-export { mark_used } from "./stylus"    // Required by Stylus
-
 // Unsigned square root
 function usqrt(n: u32): u32 {
     let x = n;
@@ -65,16 +62,19 @@ function getMaxPrimeBelow(n: i32): i32 {
     return max_val;
 }
 
-// Main entrypoint
-export function user_entrypoint(len: i32): i32 {
-    const data = getInput(len);
-    if (!data) {
-        return 1;
-    }
+/**
+ * Main function of your program
+ * @dev Receives the input of bytes in Uint8Array. Result must also be sent in bytes wrapped in Uint8Array
+ * 
+ * @param input bytes in Uint8Array
+ * @returns bytes in Uint8Array
+ */
+export const main = (input: Uint8Array): Uint8Array => {
+    // Only get the first byte as the number
+    const maxNumber = input[0];
 
-    const output = new Uint8Array(1);
-    output[0] = getMaxPrimeBelow(data[0]);
+    const result = new Uint8Array(1);
+    result[0] = getMaxPrimeBelow(maxNumber);
 
-    sendOutput(output);
-    return 0;
+    return result;
 }

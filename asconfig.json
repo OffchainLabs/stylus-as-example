@@ -2,7 +2,8 @@
   "options": {
     "bindings": false,
     "disable": ["bulk-memory"],
-    "use": ["abort=assembly/stylus/abort"]
+    "use": ["abort=assembly/stylus/stylus/abort"],
+    "runtime": "minimal"
   },
 
   "targets": {
@@ -19,8 +20,7 @@
       "optimize": true,
       "optimizeLevel": 3,
       "shrinkLevel": 2,
-      "converge": true,
-      "runtime": "minimal"
+      "converge": true
     }
   }
 }
