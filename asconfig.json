@@ -2,7 +2,7 @@
   "options": {
     "bindings": false,
     "disable": ["bulk-memory"],
-    "use": ["abort=assembly/index/myAbort"]
+    "use": ["abort=assembly/index/abort"]
   },
 
   "targets": {

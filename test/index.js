@@ -13,7 +13,7 @@ let outputBytes;
 let outputLength;
 
 // Temporary parameters
-inputBytes = crypto.randomBytes(2);
+inputBytes = crypto.randomBytes(1);
 inputLength = inputBytes.byteLength;
 
 // Helper functions
