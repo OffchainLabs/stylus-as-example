@@ -19,7 +19,8 @@
       "optimize": true,
       "optimizeLevel": 3,
       "shrinkLevel": 2,
-      "converge": true
+      "converge": true,
+      "runtime": "minimal"
     }
   }
 }

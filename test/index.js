@@ -47,7 +47,7 @@ const main = () => {
     console.log('| Final summary |');
     console.log('-----------------');
     console.log(`Input(HEX): ${printBytes(inputBytes)}`);
-    console.log(`Output(HEX): ${printBytes(inputBytes)}`)
+    console.log(`Output(HEX): ${printBytes(outputBytes)}`)
     console.log(`Result: ${result}`);
     console.log('-----------------');
     console.log('');

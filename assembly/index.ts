@@ -38,26 +38,31 @@ export function mark_used(): void {
     memory_grow(0);
 }
 
-function getInput(len: i32): Uint8Array | null {
-    const inputPtr = heap.alloc(len);
-    read_args(inputPtr);
+function increment(number: u8): u8 {
+    return number+1;
+}
 
-    const input = changetype<Uint8Array>(inputPtr);
+function getInput(len: i32): Uint8Array | null {
+    const input = new Uint8Array(len);
+    read_args(input.dataStart);
     return input;
 }
 
-function sendOutput(data: Uint8Array, len: i32): void {
-    const dataPtr = changetype<usize>(data);
-    write_result(dataPtr, len);
+function sendOutput(output: Uint8Array): void {
+    write_result(output.dataStart, output.byteLength);
 }
 
 // Main entrypoint
 export function user_entrypoint(len: i32): i32 {
-    const input = getInput(len);
-    if (!input) {
+    const data = getInput(len);
+    if (!data) {
         return 1;
     }
-    
-    sendOutput(input, len);
+
+    for (let i = 0; i < data.length; i++) {
+        data[i] = increment(data[i]);
+    }
+
+    sendOutput(data);
     return 0;
 }
