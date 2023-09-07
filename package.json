@@ -8,12 +8,23 @@
     "asbuild:release": "asc assembly/stylus/entrypoint.ts --target release && wasm2wat build/release.wasm > build/release.wat",
     "asbuild": "npm run asbuild:debug && npm run asbuild:release",
     "test:local": "node test/local.js",
-    "test:onchain": "node test/onchain.js"
+    "test:onchain": "node test/onchain.js",
+    "lint": "eslint assembly test",
+    "format": "prettier --write -- assembly/**/*.{ts,js} test/**/*.{ts,js,json} ./*.{json,yml}",
+    "format:check": "prettier --check -- assembly/**/*.{ts,js} test/**/*.{ts,js,json} ./*.{json,yml}"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "assemblyscript": "^0.27.9"
+    "@offchainlabs/eslint-config-typescript": "^0.2.2",
+    "@offchainlabs/prettier-config": "^0.2.1",
+    "@typescript-eslint/eslint-plugin": "^5.48.2",
+    "@typescript-eslint/parser": "^5.48.2",
+    "assemblyscript": "^0.27.9",
+    "eslint": "^8.32.0",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "prettier": "^2.8.3"
   },
   "type": "module",
   "exports": {

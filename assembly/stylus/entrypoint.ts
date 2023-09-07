@@ -1,17 +1,17 @@
-import { getInput, sendOutput } from "./stylus";
-export { mark_used } from "./stylus"; // Required by Stylus
-import { main } from "../app";
+import { getInput, sendOutput } from './stylus';
+export { mark_used } from './stylus'; // Required by Stylus
+import { main } from '../app';
 
 // Stylus entrypoint
 export function user_entrypoint(len: i32): i32 {
-    const input = getInput(len);
-    if (!input) {
-        return 1;
-    }
+  const input = getInput(len);
+  if (!input) {
+    return 1;
+  }
 
-    // Calling the app
-    const output = main(input);
+  // Calling the app
+  const output = main(input);
 
-    sendOutput(output);
-    return 0;
+  sendOutput(output);
+  return 0;
 }

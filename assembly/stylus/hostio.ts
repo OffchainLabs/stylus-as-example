@@ -1,4 +1,7 @@
-// @ts-nocheck
+/* eslint-disable prettier/prettier */
+// @ts-nocheck Supresses "Decorators are not allowed here" error
+// TODO: Fix "Decorators are not allowed here" warning
+
 // Define the hooks as external functions that the AssemblyScript module can call.
 
 /**
