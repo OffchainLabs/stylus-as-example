@@ -12,51 +12,64 @@ function usqrt(n: u32): u32 {
 }
 
 /**
- * Returns the max prime below given "n" using the Sieve of Eratosthenes algorithm
+ * Returns the max prime below or equal a given "number" using the Sieve of Eratosthenes algorithm
+ * (Based on t-katsumura's implementation: https://github.com/t-katsumura/webassembly-examples-eratosthenes)
+ * (Sieve of Eratosthenes explanation: https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes)
  */
-function getMaxPrimeBelow(n: i32): i32 {
-    // n is required to be greater than 2
-    if (n == 2) {
-        return 2;
-    } else if (n < 2) {
+function getMaxPrimeUpTo(number: i32): i32 {
+    // 0 here is meant to be interpreted as an error
+    if (number < 2) {
         return 0;
     }
 
-    // length of sieve array
-    let N = (n - 1) / 2;
+    // If 2 is passed, return 2
+    if (number == 2) {
+        return 2;
+    }
 
-    // max value to divide
-    let Nmax = usqrt(n);
+    // Length of the sieve array
+    const length = (number - 1) / 2;
 
-    // sieve array correspond to [3, 5, 7, 9, ..., ]
-    let arr = new StaticArray<bool>(N).fill(true);
+    // Square root (max)
+    const maxNumberToCheck = usqrt(number);
 
+    // Sieve array (starting from 3, without multiples of 2) [3, 5, 7, 9, ...]
+    const sieve = new StaticArray<bool>(length).fill(true);
+
+    // Coordinates of the Sieve
     let x: u32;
     let y: u32;
 
-    for (let i = 0; i < N; i++) {
+    for (let i = 0; i < length; i++) {
+        // Next number to check multiples for
         x = 2 * (i + 1) + 1;
 
-        // no need to check the value grater than sqrt(n)
-        if (x > Nmax) {
+        // No need to check multiples for numbers that are greater than
+        // the square root of the upper limit
+        if (x > maxNumberToCheck) {
             break;
         }
 
-        for (let j = i + 1; j < N; j++) {
-            if (!unchecked(arr[j])) {
+        // Checking multiples of x
+        for (let j = i + 1; j < length; j++) {
+            if (!unchecked(sieve[j])) {
                 continue;
             }
+
+            // Next multiple candidate
             y = 2 * (j + 1) + 1;
+
+            // Candidate is multiple of x (not prime then)
             if (y % x == 0) {
-                unchecked(arr[j] = false);
+                unchecked(sieve[j] = false);
             }
         }
     }
 
-    // check max prime below n
+    // Get the highest prime number
     let max_val: u32 = 2;
-    for (let i = N - 1; i >= 0; i--) {
-        if (unchecked(arr[i])) {
+    for (let i = length - 1; i >= 0; i--) {
+        if (unchecked(sieve[i])) {
             max_val = 2 * (i + 1) + 1;
             break;
         }
@@ -73,6 +86,6 @@ function getMaxPrimeBelow(n: i32): i32 {
  */
 export const main = (input: Uint8Array): Uint8Array => {
     const maxNumber = bytesToI32(input);
-    const maxPrime = getMaxPrimeBelow(maxNumber);
+    const maxPrime = getMaxPrimeUpTo(maxNumber);
     return i32ToBytes(maxPrime);
 }

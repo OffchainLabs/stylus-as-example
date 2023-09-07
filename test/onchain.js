@@ -6,7 +6,7 @@
 import { ethers } from "ethers";
 
 // Constants
-const PROGRAM_ADDRESS = "0x590dbaaa1f109d7039414fcc14bfd27450f3d350";
+const PROGRAM_ADDRESS = "0x82580a516312a78fbd20792276ab396f98a5b744";
 const RPC_URL = "https://stylus-testnet.arbitrum.io/rpc";
 
 // Initial setup
