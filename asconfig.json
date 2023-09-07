@@ -3,7 +3,7 @@
     "bindings": false,
     "disable": ["bulk-memory"],
     "use": ["abort=assembly/stylus/stylus/abort"],
-    "runtime": "minimal"
+    "runtime": "stub"
   },
 
   "targets": {

@@ -1,6 +1,9 @@
+/*
+ * This is a very simple local testing file. It only has support for read_args and write_result Stylus functions.
+ */
+
 // Imports
 import fs from 'fs';
-import crypto from 'crypto';
 
 // Constants
 const WASM_PATH = './build/release.wasm';
@@ -8,13 +11,7 @@ const WASM_PATH = './build/release.wasm';
 // Variables
 let wasmModule;
 let inputBytes;
-let inputLength;
 let outputBytes;
-let outputLength;
-
-// Temporary parameters
-inputBytes = crypto.randomBytes(1);
-inputLength = inputBytes.byteLength;
 
 // Helper functions
 const printBytes = (bytes) => {
@@ -30,24 +27,21 @@ const main = () => {
     console.log('');
 
     console.log('-----------------');
-    console.log('Inputs');
-    console.log(`Bytes(HEX): ${printBytes(inputBytes)}`);
-    console.log('Length: ' + inputLength);
-    console.log('-----------------');
-    console.log('');
+    console.log(`Input: ${inputNumber}`);
+    console.log('Calling program...');
 
-    console.log('-----------------');
-    console.log('Calling user_entrypoint');
+    // Transform input number into bytes
+    const inputBytesBuffer = Buffer.alloc(4);
+    inputBytesBuffer.writeInt32BE(inputNumber, 0);
+    inputBytes = new Uint8Array(inputBytesBuffer.buffer);
+
+    // Call wasm program
     const { user_entrypoint } = wasmModule.exports;
-    const result = user_entrypoint(inputLength);
-    console.log('-----------------');
-    console.log('');
+    user_entrypoint(inputBytes.byteLength);
 
-    console.log('-----------------');
-    console.log('| Final summary |');
-    console.log('-----------------');
-    console.log(`Input(HEX): ${printBytes(inputBytes)}`);
-    console.log(`Output(HEX): ${printBytes(outputBytes)}`)
+    // Format result
+    const result = Buffer.from(outputBytes).readUIntBE(0, outputBytes.length);
+
     console.log(`Result: ${result}`);
     console.log('-----------------');
     console.log('');
@@ -56,18 +50,9 @@ const main = () => {
 // Imports object
 const wasmImports = {
     vm_hooks: {
-        memory_grow: () => {
-            console.log('');
-            console.log('* Calling memory_grow *');
-            console.log('* END *');
-            console.log('');
-        },
+        memory_grow: () => {},
 
         read_args: (memoryPtr) => {
-            console.log('');
-            console.log('* Calling read_args *');
-            console.log('Params');
-            console.log(`memoryPtr => ${memoryPtr}`);
             const memory = new Uint8Array(wasmModule.exports.memory.buffer);
             const inputArray = new Uint8Array(inputBytes);
 
@@ -75,24 +60,12 @@ const wasmImports = {
                 memory[i] = inputArray[i - memoryPtr];
             }
 
-            console.log('* END *');
-            console.log('');
             return;
         },
 
         write_result: (memoryPtr, length) => {
-            console.log('');
-            console.log('* Calling write_result *');
-            console.log('Params');
-            console.log(`memoryPtr => ${memoryPtr}`);
-            console.log(`length => ${length}`);
-
             const outputMemorySlice = wasmModule.exports.memory.buffer.slice(memoryPtr, memoryPtr+length);
             outputBytes = new Uint8Array(outputMemorySlice);
-            outputLength = outputMemorySlice.byteLength;
-            console.log(`* Output = ${printBytes(outputBytes)} *`);
-
-            console.log('* END *');
         },
     }
 }
@@ -101,10 +74,19 @@ const wasmImports = {
 // Init point //
 ////////////////
 
+// Arguments check
+if (process.argv.length <= 2) {
+    console.log('Usage: npm run test:local 56');
+    process.exit(1);
+}
+
 console.log('***********************');
 console.log('* Stylus local tester *');
 console.log('***********************');
 console.log('');
+
+// Getting arguments
+const inputNumber = process.argv[2];
 
 // Loading wasm file
 console.log(`Loading WASM module in ${WASM_PATH}...`);
@@ -112,5 +94,5 @@ const wasmBuffer = fs.readFileSync(WASM_PATH);
 WebAssembly.instantiate(wasmBuffer, wasmImports).then(wM => {
     console.log('Module loaded!');
     wasmModule = wM.instance;
-    main();
+    main(inputNumber);
 });

@@ -1,3 +1,5 @@
+import { i32ToBytes, bytesToI32 } from './utils';
+
 // Unsigned square root
 function usqrt(n: u32): u32 {
     let x = n;
@@ -70,11 +72,7 @@ function getMaxPrimeBelow(n: i32): i32 {
  * @returns bytes in Uint8Array
  */
 export const main = (input: Uint8Array): Uint8Array => {
-    // Only get the first byte as the number
-    const maxNumber = input[0];
-
-    const result = new Uint8Array(1);
-    result[0] = getMaxPrimeBelow(maxNumber);
-
-    return result;
+    const maxNumber = bytesToI32(input);
+    const maxPrime = getMaxPrimeBelow(maxNumber);
+    return i32ToBytes(maxPrime);
 }
