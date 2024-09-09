@@ -64,7 +64,7 @@ cargo stylus deploy --wasm-file ./build/release.wasm --private-key=YOUR_PRIVATE_
 
 Deploy smart contract
 ```shell
-cargo stylus deploy --wasm-file-path ./build/release.wasm --private-key=YOUR_PRIVATE_KEY --no-verify
+cargo stylus deploy --wasm-file ./build/release.wasm --private-key=YOUR_PRIVATE_KEY --no-verify
 ```
 
 Test on-chain (modify the contract address at the beginning of the file)
