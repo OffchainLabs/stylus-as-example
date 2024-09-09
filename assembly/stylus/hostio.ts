@@ -236,8 +236,8 @@ export declare function evm_ink_left(): u64;
  * Internally the Stylus VM forces calls to this hostio whenever new WASM pages are allocated.
  * Calls made voluntarily will unproductively consume gas.
  */
-@external("vm_hooks", "memory_grow")
-export declare function memory_grow(pages: u16): void;
+@external("vm_hooks", "pay_for_memory_grow")
+export declare function pay_for_memory_grow(new_pages: u16): void;
 
 /** 
  * Gets the address of the account that called the program. For normal L2-to-L2 transactions

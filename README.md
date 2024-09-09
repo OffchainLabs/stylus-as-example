@@ -8,6 +8,7 @@ Stylus is is an upgrade to Arbitrum, an Ethereum-focused, smart contract blockch
 
 In order to make your AS program work on Stylus, there are a few things to keep in mind:
 - The main entry point for the WASM program has to be a specific function called user_entrypoint. There's no need to make any configuration options, but that function must exist, and should receive an i32 (the length of the byte stream received by input) and return another i32 (0 on success, and 1 on error).
+- AssemblyScript will create a [start](https://webassembly.github.io/spec/core/syntax/modules.html#syntax-start) function by default, which is not supported on Stylus. To prevent AS from doing so, you must specify option `--exportStart` and pass a different name for the start function (e.g. `myStart`). Doing this will tell AS to export the start function, instead of explicitly calling it in the compiled wasm file.
 - Input data is read from memory by calling the Stylus function `read_args`
 - Output data is written in the memory by calling the Stylus function `write_result`
 - `bulk-memory` needs to be disabled. When using it, AS will use the DataCountSection of WASM, which is not supported by Stylus yet
@@ -20,54 +21,54 @@ This repository holds all these changes and also wraps the Stylus specific flow 
 ## Installation of the Stylus Cargo subcommand
 
 Install the latest version of [Rust](https://www.rust-lang.org/tools/install), and then install the Stylus CLI tool with Cargo
-```bash
+```shell
 cargo install cargo-stylus
 ```
 
 Add the wasm32-unknown-unknown build target to your Rust compiler:
-```bash
+```shell
 rustup target add wasm32-unknown-unknown
 ```
 
 You should now have it available as a Cargo subcommand:
-```bash
+```shell
 cargo stylus --help
 ```
 
 ## Steps to build and test
 
 Install dependencies
-```bash
+```shell
 npm ci
 ```
 
 Compile to WASM
-```bash
+```shell
 npm run asbuild
 ```
 
 Test locally (optional)
-```bash
+```shell
 npm run test:local 56
 ```
 
 Check WASM program with stylus
-```bash
-cargo stylus check --wasm-file-path ./build/release.wasm
+```shell
+cargo stylus check --wasm-file ./build/release.wasm --no-verify
 ```
 
 Estimate gas usage for deployment
-```bash
-cargo stylus deploy --wasm-file-path ./build/release.wasm --private-key=YOUR_PRIVATE_KEY --estimate-gas-only
+```shell
+cargo stylus deploy --wasm-file ./build/release.wasm --private-key=YOUR_PRIVATE_KEY --estimate-gas --no-verify
 ```
 
 Deploy smart contract
-```bash
-cargo stylus deploy --wasm-file-path ./build/release.wasm --private-key=YOUR_PRIVATE_KEY
+```shell
+cargo stylus deploy --wasm-file-path ./build/release.wasm --private-key=YOUR_PRIVATE_KEY --no-verify
 ```
 
-Test on-chain
-```bash
+Test on-chain (modify the contract address at the beginning of the file)
+```shell
 npm run test:onchain 56
 ```
 

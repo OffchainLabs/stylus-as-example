@@ -1,4 +1,4 @@
-import { memory_grow, read_args, write_result } from './hostio';
+import { pay_for_memory_grow, read_args, write_result } from './hostio';
 
 // Fallback functions
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -8,7 +8,7 @@ function abort(message: usize, fileName: usize, line: u32, column: u32): void {
 
 // Helper functions
 export function mark_used(): void {
-  memory_grow(0);
+  pay_for_memory_grow(0);
 }
 
 export function getInput(len: i32): Uint8Array | null {

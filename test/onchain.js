@@ -6,8 +6,8 @@
 import { ethers } from 'ethers';
 
 // Constants
-const PROGRAM_ADDRESS = '0xa1fa9d6e1992214d467572ded2e9238802c15330';
-const RPC_URL = 'https://stylus-testnet.arbitrum.io/rpc';
+const PROGRAM_ADDRESS = '0x1f2e9e1713575794f1efd572299f3fc49b15525f';
+const RPC_URL = 'https://sepolia-rollup.arbitrum.io/rpc';
 
 // Initial setup
 const stylusProvider = new ethers.JsonRpcProvider(RPC_URL);
