@@ -45,7 +45,7 @@ const main = () => {
 // Imports object
 const wasmImports = {
   vm_hooks: {
-    memory_grow: () => {},
+    pay_for_memory_grow: () => {},
 
     read_args: (memoryPtr) => {
       const memory = new Uint8Array(wasmModule.exports.memory.buffer);
