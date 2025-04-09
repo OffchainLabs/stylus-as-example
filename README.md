@@ -39,22 +39,22 @@ cargo stylus --help
 
 Install dependencies
 ```shell
-npm ci
+yarn
 ```
 
 Compile to WASM
 ```shell
-npm run asbuild
+yarn asbuild
 ```
 
 Test locally (optional)
 ```shell
-npm run test:local 56
+yarn test:local 56
 ```
 
 Check WASM program with stylus
 ```shell
-cargo stylus check --wasm-file ./build/release.wasm --no-verify
+cargo stylus check --wasm-file ./build/release.wasm
 ```
 
 Estimate gas usage for deployment
@@ -69,7 +69,7 @@ cargo stylus deploy --wasm-file ./build/release.wasm --private-key=YOUR_PRIVATE_
 
 Test on-chain (modify the contract address at the beginning of the file)
 ```shell
-npm run test:onchain 56
+yarn test:onchain 56
 ```
 
 ## A note on the local testing file
