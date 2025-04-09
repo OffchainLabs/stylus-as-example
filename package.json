@@ -6,7 +6,7 @@
   "scripts": {
     "asbuild:debug": "asc assembly/stylus/entrypoint.ts --target debug && wasm2wat build/debug.wasm > build/debug.wat",
     "asbuild:release": "asc assembly/stylus/entrypoint.ts --target release && wasm2wat build/release.wasm > build/release.wat",
-    "asbuild": "npm run asbuild:debug && npm run asbuild:release",
+    "asbuild": "yarn run asbuild:debug && yarn run asbuild:release",
     "test:local": "node test/local.js",
     "test:onchain": "node test/onchain.js",
     "lint": "eslint assembly",

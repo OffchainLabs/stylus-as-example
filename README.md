@@ -7,7 +7,7 @@ Stylus is is an upgrade to Arbitrum, an Ethereum-focused, smart contract blockch
 ## Overview
 
 In order to make your AS program work on Stylus, there are a few things to keep in mind:
-- The main entry point for the WASM program has to be a specific function called user_entrypoint. There's no need to make any configuration options, but that function must exist, and should receive an i32 (the length of the byte stream received by input) and return another i32 (0 on success, and 1 on error).
+- The main entry point for the WASM program has to be a specific function called `user_entrypoint`. There's no need to add any configuration options to specify it, but that function must exist, and should receive an i32 (the length of the byte stream received by input) and return another i32 (0 on success, and 1 on error).
 - AssemblyScript will create a [start](https://webassembly.github.io/spec/core/syntax/modules.html#syntax-start) function by default, which is not supported on Stylus. To prevent AS from doing so, you must specify option `--exportStart` and pass a different name for the start function (e.g. `myStart`). Doing this will tell AS to export the start function, instead of explicitly calling it in the compiled wasm file.
 - Input data is read from memory by calling the Stylus function `read_args`
 - Output data is written in the memory by calling the Stylus function `write_result`

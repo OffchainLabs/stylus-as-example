@@ -74,7 +74,7 @@ const wasmImports = {
 
 // Arguments check
 if (process.argv.length <= 2) {
-  console.log('Usage: npm run test:local 56');
+  console.log('Usage: yarn test:local 56');
   process.exit(1);
 }
 

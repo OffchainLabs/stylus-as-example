@@ -6,8 +6,8 @@
 import { ethers } from 'ethers';
 
 // Constants
-const PROGRAM_ADDRESS = '0x1f2e9e1713575794f1efd572299f3fc49b15525f';
-const RPC_URL = 'https://sepolia-rollup.arbitrum.io/rpc';
+const PROGRAM_ADDRESS = '0xf5ffd11a55afd39377411ab9856474d2a7cb697e';
+const RPC_URL = 'http://localhost:8547/';
 
 // Initial setup
 const stylusProvider = new ethers.JsonRpcProvider(RPC_URL);
@@ -41,7 +41,7 @@ const main = async (inputNumber) => {
 
 // Arguments check
 if (process.argv.length <= 2) {
-  console.log('Usage: npm run test:onchain 56');
+  console.log('Usage: yarn test:onchain 56');
   process.exit(1);
 }
 
