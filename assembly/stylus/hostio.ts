@@ -1,8 +1,10 @@
 /* eslint-disable prettier/prettier */
 // @ts-nocheck Supresses "Decorators are not allowed here" error
 // TODO: Fix "Decorators are not allowed here" warning
+// Once fixed, remove the .prettierignore file too
 
 // Define the hooks as external functions that the AssemblyScript module can call.
+// Based on https://github.com/OffchainLabs/stylus-sdk-rs/blob/main/stylus-sdk/src/hostio.rs
 
 /**
  * Gets the ETH balance in wei of the account at the given address.
@@ -12,6 +14,26 @@
  */
 @external("vm_hooks", "account_balance")
 export declare function account_balance(address: u32, dest: u32): void;
+
+/**
+ * Gets a subset of the code from the account at the given address. The semantics are identical to that
+ * of the EVM's [`EXT_CODE_COPY`] opcode, aside from one small detail: the write to the buffer `dest` will
+ * stop after the last byte is written. This is unlike the EVM, which right pads with zeros in this scenario.
+ * The return value is the number of bytes written, which allows the caller to detect if this has occurred.
+ * 
+ * [`EXT_CODE_COPY`]: https://www.evm.codes/#3C
+ */
+@external("vm_hooks", "account_code")
+export declare function account_code(address: u32, offset: u32, size: u32, dest: u32): u32;
+
+/**
+ * Gets the size of the code in bytes at the given address. The semantics are equivalent
+ * to that of the EVM's [`EXT_CODESIZE`].
+ * 
+ * [`EXT_CODESIZE`]: https://www.evm.codes/#3B
+ */
+@external("vm_hooks", "account_code_size")
+export declare function account_code_size(address: u32): u32;
 
 /**
  * Gets the code hash of the account at the given address. The semantics are equivalent
@@ -239,6 +261,12 @@ export declare function evm_ink_left(): u64;
 @external("vm_hooks", "pay_for_memory_grow")
 export declare function pay_for_memory_grow(new_pages: u16): void;
 
+/**
+ * Whether the current call is reentrant.
+ */
+@external("vm_hooks", "msg_reentrant")
+export declare function msg_reentrant(): bool;
+
 /** 
  * Gets the address of the account that called the program. For normal L2-to-L2 transactions
  * the semantics are equivalent to that of the EVM's [`CALLER`] opcode, including in cases
@@ -343,10 +371,21 @@ export declare function storage_load_bytes32(key: u32, dest: u32): void;
  * the EVM state trie at offset `key`. Furthermore, refunds are tabulated exactly as in the
  * EVM. The semantics, then, are equivalent to that of the EVM's [`SSTORE`] opcode.
  * 
+ * Note: because the value is cached, one must call `storage_flush_cache` to persist it.
+ * 
  * [`SSTORE`]: https://www.evm.codes/#55
  */
 @external("vm_hooks", "storage_store_bytes32")
 export declare function storage_store_bytes32(key: u32, value: u32): void;
+
+/**
+ * Persists any dirty values in the storage cache to the EVM state trie, dropping the cache entirely if requested.
+ * Analogous to repeated invocations of [`SSTORE`].
+ *
+ * [`SSTORE`]: https://www.evm.codes/#55
+ */
+@external("vm_hooks", "storage_flush_cache")
+export declare function storage_flush_cache(clear: bool): void;
 
 /**
  * Gets the gas price in wei per gas, which on Arbitrum chains equals the basefee. The
