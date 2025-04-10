@@ -1,13 +1,13 @@
-# Stylus - AssemblyScript example program (Sieve of Erathosthenes)
+# Stylus - AssemblyScript example contract (Sieve of Erathosthenes)
 
 Example of a basic smart contract written in AssemblyScript and compiled to WebAssembly (WASM) to be used on Arbitrum Stylus. It contains an implementation of the [sieve of Erathosthenes](https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes) algorithm.
 
-Stylus is is an upgrade to Arbitrum, an Ethereum-focused, smart contract blockchain that scales the network. In addition to supporting Ethereum smart contracts written in Solidity, Stylus supports programs written in WebAssembly. Because AssemblyScript compiles to WASM, it can be used to create smart contracts to be used on Stylus.
+Stylus is is an upgrade to Arbitrum, an Ethereum-focused, smart contract blockchain that scales the network. In addition to supporting Ethereum smart contracts written in Solidity, Stylus supports contracts written in WebAssembly. Because AssemblyScript compiles to WASM, it can be used to create smart contracts to be used on Stylus.
 
 ## Overview
 
-In order to make your AS program work on Stylus, there are a few things to keep in mind:
-- The main entry point for the WASM program has to be a specific function called `user_entrypoint`. There's no need to add any configuration options to specify it, but that function must exist, and should receive an i32 (the length of the byte stream received by input) and return another i32 (0 on success, and 1 on error).
+In order to make your AS contract work on Stylus, there are a few things to keep in mind:
+- The main entry point for the WASM contract has to be a specific function called `user_entrypoint`. There's no need to add any configuration options to specify it, but that function must exist, and should receive an i32 (the length of the byte stream received by input) and return another i32 (0 on success, and 1 on error).
 - AssemblyScript will create a [start](https://webassembly.github.io/spec/core/syntax/modules.html#syntax-start) function by default, which is not supported on Stylus. To prevent AS from doing so, you must specify option `--exportStart` and pass a different name for the start function (e.g. `myStart`). Doing this will tell AS to export the start function, instead of explicitly calling it in the compiled wasm file.
 - Input data is read from memory by calling the Stylus function `read_args`
 - Output data is written in the memory by calling the Stylus function `write_result`
@@ -52,7 +52,7 @@ Test locally (optional)
 yarn test:local 56
 ```
 
-Check WASM program with stylus
+Check WASM contract with stylus
 ```shell
 cargo stylus check --wasm-file ./build/release.wasm
 ```

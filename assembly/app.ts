@@ -78,7 +78,7 @@ function getMaxPrimeUpTo(number: i32): i32 {
 }
 
 /**
- * Main function of your program
+ * Main function of your contract
  * @dev Receives the input of bytes in Uint8Array. Result must also be sent in bytes wrapped in Uint8Array
  *
  * @param input bytes in Uint8Array
